@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>iPhone Quote Generator | NdraOffc</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: radial-gradient(circle at 20% 30%, rgba(255, 70, 110, 0.12), transparent 45%),
+                  radial-gradient(circle at 85% 70%, rgba(173, 74, 231, 0.12), transparent 50%),
+                  #07070c;
+      font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+      min-height: 100vh;
+      padding: 2rem 1.5rem;
+    }
+
+    .generator-container {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    /* Header Premium */
+    .hero-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .glow-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(12px);
+      padding: 6px 20px;
+      border-radius: 60px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #ffb7cc;
+      margin-bottom: 1.2rem;
+    }
+
+    .glow-badge i {
+      color: #ff5e8e;
+    }
+
+    h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #FFFFFF 0%, #FFB8D0 30%, #E88CFF 70%, #FFFFFF 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+
+    .sub-header {
+      font-size: 0.9rem;
+      color: #a5a5c0;
+      margin-top: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .sub-header span {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 4px 14px;
+      border-radius: 40px;
+      font-size: 0.75rem;
+    }
+
+    /* Layout 2 kolom rapi */
+    .two-columns {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .form-col {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .preview-col {
+      flex: 1.2;
+      min-width: 340px;
+    }
+
+    /* Glassmorphic Card */
+    .glass-card {
+      background: rgba(18, 18, 28, 0.7);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 2rem;
+      overflow: hidden;
+      box-shadow: 0 25px 40px -15px rgba(0, 0, 0, 0.5);
+      height: 100%;
+      transition: all 0.2s;
+    }
+
+    .form-panel {
+      padding: 2rem;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1.8rem;
+      font-weight: 700;
+      font-size: 1.35rem;
+      background: linear-gradient(120deg, #f0f0ff, #d9c8ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .section-title i {
+      background: linear-gradient(135deg, #ff3b6f, #b84eff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .input-group {
+      margin-bottom: 1.3rem;
+    }
+
+    .input-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #cbcbe8;
+      margin-bottom: 0.5rem;
+    }
+
+    .input-label i {
+      font-size: 0.8rem;
+      color: #ff6b9a;
+    }
+
+    .input-field {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      border-radius: 1.2rem;
+      padding: 0.85rem 1.2rem;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #ffffff;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: #ff5e8e;
+      box-shadow: 0 0 0 3px rgba(255, 94, 142, 0.25);
+    }
+
+    textarea.input-field {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .generate-btn {
+      width: 100%;
+      background: linear-gradient(105deg, #ff2e5c, #b33eff);
+      border: none;
+      border-radius: 2rem;
+      padding: 1rem;
+      font-weight: 800;
+      font-size: 1rem;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: all 0.25s;
+      box-shadow: 0 8px 22px rgba(255, 46, 92, 0.4);
+    }
+
+    .generate-btn:hover {
+      transform: translateY(-3px);
+      filter: brightness(1.05);
+    }
+
+    /* Preview Card - hanya muncul setelah generate */
+    .preview-card {
+      padding: 1.8rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .preview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .preview-header span {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #e0e0ff;
+    }
+
+    .preview-header i {
+      color: #ff6b9a;
+    }
+
+    .image-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 1.5rem;
+      padding: 1rem;
+      margin: 0.5rem 0;
+    }
+
+    .preview-img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 1.5rem;
+      box-shadow: 0 15px 30px -8px black;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      object-fit: contain;
+      display: block;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 1.5rem;
+      width: 100%;
+      flex-wrap: wrap;
+    }
+
+    .btn-download, .btn-zoom {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0.7rem 1.6rem;
+      border-radius: 3rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.08);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+    }
+
+    .btn-download:hover, .btn-zoom:hover {
+      background: rgba(255, 255, 255, 0.18);
+      transform: scale(1.02);
+      border-color: #ff7ea5;
+    }
+
+    /* Placeholder awal (sebelum generate) */
+    .preview-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 420px;
+      text-align: center;
+      color: #8a8aae;
+      gap: 18px;
+      padding: 2rem;
+    }
+
+    .preview-placeholder i {
+      font-size: 3.5rem;
+      opacity: 0.4;
+    }
+
+    .preview-placeholder p {
+      font-size: 0.9rem;
+      max-width: 260px;
+      line-height: 1.5;
+    }
+
+    /* Info & Tips Pro (warna kuning keemasan) */
+    .info-card {
+      margin-top: 1.8rem;
+      background: rgba(12, 12, 20, 0.65);
+      backdrop-filter: blur(14px);
+      border-radius: 2rem;
+      padding: 1.5rem 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .info-header {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .info-header i {
+      font-size: 1.5rem;
+      color: #ffd966;
+    }
+
+    .info-header h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #fff2cf, #ffe0a3);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.8rem;
+      margin: 1rem 0 0.5rem;
+    }
+
+    .info-grid-item {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      font-size: 0.85rem;
+      color: #cbcbe6;
+    }
+
+    .info-grid-item i {
+      color: #ff9f4a;
+      font-size: 0.8rem;
+    }
+
+    /* Tips Pro - Kuning Premium */
+    .tip-pro {
+      background: linear-gradient(115deg, rgba(255, 200, 70, 0.2), rgba(255, 170, 60, 0.12));
+      border-left: 5px solid #FFD966;
+      border-radius: 1.2rem;
+      padding: 1rem 1.3rem;
+      margin-top: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      backdrop-filter: blur(4px);
+    }
+
+    .tip-pro i {
+      font-size: 1.6rem;
+      color: #FFD93D;
+      filter: drop-shadow(0 0 5px #ffaa33);
+    }
+
+    .tip-pro p {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #FFE7B0;
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    .tip-pro strong {
+      color: #FFE484;
+    }
+
+    .loading, .error {
+      margin-top: 1rem;
+      padding: 0.7rem;
+      border-radius: 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+    }
+
+    .loading {
+      display: none;
+      background: rgba(255, 255, 255, 0.05);
+      color: #ffb6c7;
+    }
+
+    .error {
+      display: none;
+      background: rgba(255, 60, 60, 0.12);
+      color: #ffa4a4;
+      border: 1px solid rgba(255, 80, 80, 0.3);
+    }
+
+    @media (max-width: 780px) {
+      body {
+        padding: 1rem;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+      .form-panel {
+        padding: 1.5rem;
+      }
+      .tip-pro {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @keyframes fadeSlide {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .glass-card, .info-card, .preview-card {
+      animation: fadeSlide 0.4s ease-out;
+    }
+  </style>
+</head>
+<body>
+<div class="generator-container">
+  <!-- Header tanpa banner, tanpa sidebar -->
+  <div class="hero-header">
+    <div class="glow-badge">
+      <i class="fas fa-bolt"></>Website Quote
+    </div>
+    <h1>iPhone Quote<br>Generator</h1>
+    <div class="sub-header">
+      <span><i class="far fa-clock"></i> iMessage Style</span>
+      <span><i class="fas fa-battery-full"></i> Realistic UI</span>
+      <span><i class="fas fa-download"></i> HD Quality</span>
+    </div>
+  </div>
+
+  <div class="two-columns">
+    <!-- Kiri: Form Panel -->
+    <div class="form-col">
+      <div class="glass-card">
+        <div class="form-panel">
+          <div class="section-title">
+            <i class="fas fa-sliders-h"></i>
+            <span>Quote Generator Panel</span>
+          </div>
+
+          <div class="input-group">
+            <div class="input-label"><i class="fas fa-clock"></i> Jam</div>
+            <input type="text" id="time" class="input-field" placeholder="18:00" value="">
+            <div style="font-size:0.65rem; margin-top:5px; margin-left:10px; color:#8e8eb0;">Format: HH:MM (24h)</div>
+          </div>
+
+          <div class="input-group">
+            <div class="input-label"><i class="fas fa-battery-half"></i> Persentase Baterai</div>
+            <input type="number" id="battery" class="input-field" placeholder="40" value="40" min="0" max="100">
+          </div>
+
+          <div class="input-group">
+            <div class="input-label"><i class="fas fa-signal"></i> Nama Provider</div>
+            <input type="text" id="carrier" class="input-field" placeholder="Telkomsel / XL" value="Telkomsel">
+          </div>
+
+          <div class="input-group">
+            <div class="input-label"><i class="fas fa-comment-dots"></i> Pesan</div>
+            <textarea id="message" class="input-field" placeholder="Tulis pesan iMessage disini...">Haii bang🔥</textarea>
+          </div>
+
+          <button id="generateBtn" class="generate-btn">
+            <i class="fas fa-magic"></i> GENERATE QUOTE
+          </button>
+          <div class="loading" id="loading">
+            <i class="fas fa-spinner fa-pulse"></i> Sedang membuat gambar premium...
+          </div>
+          <div class="error" id="error"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Kanan: Preview Area (muncul hanya setelah generate) -->
+    <div class="preview-col">
+      <div class="glass-card" id="previewContainer">
+        <!-- Placeholder awal (hanya muncul sebelum gambar di-generate) -->
+        <div id="placeholderBox" class="preview-placeholder">
+          <i class="fas fa-iphone"></i>
+          <p>✨ Hasil screenshot iPhone akan tampil di sini ✨<br>Klik GENERATE QUOTE untuk membuat gambar</p>
+        </div>
+        <!-- Preview Card (hidden awalnya) -->
+        <div id="previewCard" style="display: none;">
+          <div class="preview-card">
+            <div class="preview-header">
+              <span><i class="fas fa-image"></i> iPhone Quote Preview</span>
+              <i class="fas fa-check-circle" style="color:#4cd964;"></i>
+            </div>
+            <div class="image-wrapper">
+              <img id="previewImage" class="preview-img" alt="iPhone Quote" style="max-width:100%;">
+            </div>
+            <div class="action-buttons">
+              <a href="#" id="downloadBtn" class="btn-download" download="iphone_quote.png">
+                <i class="fas fa-download"></i> Download
+              </a>
+              <button id="zoomBtn" class="btn-zoom">
+                <i class="fas fa-expand"></i> Lihat Gambar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Info + Tips Pro warna kuning premium -->
+  <div class="info-card">
+    <div class="info-header">
+      <i class="fas fa-circle-info"></i>
+      <h3>Panduan Penggunaan</h3>
+    </div>
+    <div class="info-grid">
+      <div class="info-grid-item"><i class="fas fa-check-circle"></i> <strong>Jam</strong> – Tampilan waktu status bar (HH:MM)</div>
+      <div class="info-grid-item"><i class="fas fa-check-circle"></i> <strong>Baterai</strong> – Persentase baterai gaya iOS</div>
+      <div class="info-grid-item"><i class="fas fa-check-circle"></i> <strong>Provider</strong> – Nama operator seluler</div>
+      <div class="info-grid-item"><i class="fas fa-check-circle"></i> <strong>Pesan</strong> – Bubble chat iMessage premium</div>
+    </div>
+    <div class="tip-pro">
+      <i class="fas fa-crown"></i>
+      <p><strong>✨ TIPS</strong> — Gunakan nama provider lokal & pesan natural agar hasil screenshot mirip iPhone asli. Klik tombol <strong>"Lihat Gambar"</strong> untuk melihat dalam resolusi penuh, dan <strong>"Download"</strong> otomatis menyimpan gambar PNG berkualitas HD tanpa potong.</p>
+    </div>
+    <div style="margin-top: 0.8rem; font-size: 0.7rem; text-align: right; opacity: 0.6;">
+      <i class="fas fa-bolt"></i> AP XCRASHER ENGINE • Realistic iPhone Quote
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    // DOM Elements
+    const timeInput = document.getElementById('time');
+    const batteryInput = document.getElementById('battery');
+    const carrierInput = document.getElementById('carrier');
+    const messageInput = document.getElementById('message');
+    const generateBtn = document.getElementById('generateBtn');
+    const loadingDiv = document.getElementById('loading');
+    const errorDiv = document.getElementById('error');
+    const placeholderBox = document.getElementById('placeholderBox');
+    const previewCardDiv = document.getElementById('previewCard');
+    const previewImg = document.getElementById('previewImage');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const zoomBtn = document.getElementById('zoomBtn');
+
+    let currentImageUrl = '';
+
+    // Helper functions
+    function showError(msg) {
+      errorDiv.textContent = msg;
+      errorDiv.style.display = 'block';
+      setTimeout(() => {
+        if (errorDiv.style.display === 'block') errorDiv.style.display = 'none';
+      }, 4500);
+    }
+
+    function hideError() {
+      errorDiv.style.display = 'none';
+    }
+
+    function setLoadingState(isLoading) {
+      if (isLoading) {
+        loadingDiv.style.display = 'block';
+        generateBtn.disabled = true;
+        generateBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> PROCESSING...';
+        hideError();
+        // Sembunyikan preview dan placeholder (biar rapi)
+        previewCardDiv.style.display = 'none';
+        placeholderBox.style.display = 'flex';
+      } else {
+        loadingDiv.style.display = 'none';
+        generateBtn.disabled = false;
+        generateBtn.innerHTML = '<i class="fas fa-magic"></i> GENERATE QUOTE';
+      }
+    }
+
+    function validateInputs() {
+      let time = timeInput.value.trim();
+      let battery = batteryInput.value.trim();
+      let carrier = carrierInput.value.trim();
+      let message = messageInput.value.trim();
+
+      if (!time) {
+        showError('❌ Jam harus diisi! Contoh: 14:30');
+        return false;
+      }
+      const timeRegex = /^([01][0-9]|2[0-3]):[0-5][0-9]$/;
+      if (!timeRegex.test(time)) {
+        showError('⏰ Format jam salah. Gunakan HH:MM (misal: 09:45)');
+        return false;
+      }
+      if (!battery) {
+        showError('🔋 Persentase baterai tidak boleh kosong');
+        return false;
+      }
+      let batNum = Number(battery);
+      if (isNaN(batNum) || batNum < 0 || batNum > 100) {
+        showError('🔋 Baterai harus angka 0-100');
+        return false;
+      }
+      if (!carrier) {
+        showError('📡 Nama provider harus diisi');
+        return false;
+      }
+      if (!message) {
+        showError('💬 Pesan tidak boleh kosong');
+        return false;
+      }
+      return true;
+    }
+
+    function buildApiUrl() {
+      let time = timeInput.value.trim();
+      let battery = batteryInput.value.trim();
+      let carrier = carrierInput.value.trim();
+      let message = messageInput.value.trim();
+
+      if (!time.match(/^([01][0-9]|2[0-3]):[0-5][0-9]$/)) time = "16:40";
+      let batteryNum = Math.min(100, Math.max(0, Number(battery) || 40));
+      const encodedTime = encodeURIComponent(time);
+      const encodedCarrier = encodeURIComponent(carrier);
+      const encodedMessage = encodeURIComponent(message);
+      // API endpoint stabil seperti yang digunakan sebelumnya
+      return `https://brat.siputzx.my.id/iphone-quoted?time=${encodedTime}&batteryPercentage=${batteryNum}&carrierName=${encodedCarrier}&messageText=${encodedMessage}&emojiStyle=apple`;
+    }
+
+    async function generateQuote() {
+      if (!validateInputs()) return;
+
+      setLoadingState(true);
+      const finalUrl = buildApiUrl();
+      currentImageUrl = finalUrl;
+
+      let loadSuccessful = false;
+      const imageLoadPromise = new Promise((resolve, reject) => {
+        previewImg.onload = () => {
+          loadSuccessful = true;
+          resolve(true);
+        };
+        previewImg.onerror = () => {
+          reject(new Error('Gagal memuat gambar dari server. Cek koneksi atau coba lagi.'));
+        };
+        previewImg.src = finalUrl;
+        downloadBtn.href = finalUrl;
+        setTimeout(() => {
+          if (!loadSuccessful) reject(new Error('Timeout: server lambat, coba ulang.'));
+        }, 15000);
+      });
+
+      try {
+        await imageLoadPromise;
+        // Sukses: tampilkan preview, sembunyikan placeholder
+        placeholderBox.style.display = 'none';
+        previewCardDiv.style.display = 'block';
+        setLoadingState(false);
+        // scroll halus ke preview biar nyaman
+        previewCardDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } catch (err) {
+        setLoadingState(false);
+        showError(`⚠️ ${err.message || 'Generate gagal, periksa input atau coba nanti.'}`);
+        placeholderBox.style.display = 'flex';
+        previewCardDiv.style.display = 'none';
+      }
+    }
+
+    // Download otomatis via fetch blob agar langsung terunduh
+    async function handleDownload(e) {
+      e.preventDefault();
+      if (!currentImageUrl) {
+        showError('Tidak ada gambar. Silakan generate terlebih dahulu.');
+        return;
+      }
+      try {
+        const response = await fetch(currentImageUrl);
+        if (!response.ok) throw new Error('Gagal mengambil gambar');
+        const blob = await response.blob();
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = `iphone-quote-${Date.now()}.png`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(blobUrl);
+      } catch (err) {
+        // fallback: buka tab baru
+        window.open(currentImageUrl, '_blank');
+      }
+    }
+
+    function handleZoom() {
+      if (!currentImageUrl) {
+        showError('Belum ada gambar, generate dulu!');
+        return;
+      }
+      window.open(currentImageUrl, '_blank');
+    }
+
+    // Set default waktu realtime
+    function setDefaultValues() {
+      if (!timeInput.value) {
+        const now = new Date();
+        const hh = String(now.getHours()).padStart(2, '0');
+        const mm = String(now.getMinutes()).padStart(2, '0');
+        timeInput.value = `${hh}:${mm}`;
+      }
+      if (!batteryInput.value) batteryInput.value = "45";
+      if (!carrierInput.value) carrierInput.value = "Telkomsel";
+      if (!messageInput.value) messageInput.value = "Halo, ini quote iPhone keren ✨";
+    }
+
+    // Event listeners
+    generateBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      generateQuote();
+    });
+
+    downloadBtn.addEventListener('click', handleDownload);
+    zoomBtn.addEventListener('click', handleZoom);
+
+    window.addEventListener('DOMContentLoaded', () => {
+      setDefaultValues();
+      // Awal: placeholder tampil, preview card sembunyi
+      placeholderBox.style.display = 'flex';
+      previewCardDiv.style.display = 'none';
+    });
+  })();
+</script>
+</body>
+</html>
