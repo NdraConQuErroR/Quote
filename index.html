@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>iPhone Quote Generator | By NdraOffc</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Rajdhani:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* =========================================
+           1. CORE RESET & VARIABLE SYSTEM
+           =========================================
+        */
+        :root {
+            --bg-deep: #0a0510;
+            --glass: rgba(20, 12, 35, 0.8);
+            --accent-primary: #b84dff;
+            --accent-secondary: #ff4d6d;
+            --text-main: #f0e6ff;
+            --text-dim: #b79eff;
+            --border-glow: rgba(156, 80, 255, 0.3);
+            --ig-gradient: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(184, 77, 255, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(255, 77, 109, 0.15) 0%, transparent 40%);
+            background-attachment: fixed;
+            font-family: 'Rajdhani', sans-serif;
+            color: var(--text-main);
+            overflow-x: hidden;
+            padding: 1.5rem;
+        }
+
+        /* =========================================
+           2. ANIMATION DEFINITIONS
+           =========================================
+        */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes rotateStory {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes floatEffect {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* =========================================
+           3. HEADER & IG STORY LOGO
+           =========================================
+        */
+        .main-header {
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+/* Instagram Story Logo Style - Static Version */
+.ig-story-ring {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    padding: 4px;
+    background: var(--ig-gradient);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Animation dihapus agar tidak berputar */
+}
+
+.ig-story-ring::before {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    background: var(--bg-deep);
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.logo-img {
+    width: 86px;
+    height: 86px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--bg-deep);
+    position: relative;
+    z-index: 2;
+    /* Animation dihapus agar tidak berputar balik */
+}
+
+        .header-titles h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 0.9;
+            background: linear-gradient(135deg, #e0b0ff, #ff6b8a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+
+        .header-titles p {
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* Quality Badges */
+        .badge-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glow);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(5px);
+        }
+
+        .badge i { color: #ff6b8a; }
+
+        /* =========================================
+           4. WORKSPACE GRID
+           =========================================
+        */
+        .app-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap: 2.5rem;
+            align-items: start;
+        }
+
+        .panel-card {
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--border-glow);
+            border-radius: 2.5rem;
+            padding: 2.5rem;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .panel-head {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 2rem;
+            color: var(--accent-secondary);
+        }
+
+        .panel-head h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        /* Input Styles with Icons */
+        .form-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-dim);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .form-label i {
+            width: 20px;
+            text-align: center;
+            color: var(--accent-secondary);
+        }
+
+        .form-control {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1.5px solid var(--border-glow);
+            border-radius: 1.2rem;
+            padding: 1rem 1.4rem;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-secondary);
+            background: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 15px rgba(255, 77, 109, 0.2);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: none;
+        }
+
+        .btn-main {
+            width: 100%;
+            padding: 1.2rem;
+            border: none;
+            border-radius: 1.5rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            box-shadow: 0 10px 25px rgba(184, 77, 255, 0.3);
+            transition: 0.4s;
+            margin-top: 1rem;
+        }
+
+        .btn-main:hover {
+            transform: translateY(-5px);
+            filter: brightness(1.15);
+            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.4);
+        }
+
+        /* =========================================
+           5. DYNAMIC PREVIEW AREA (HIDDEN FIRST)
+           =========================================
+        */
+        #previewArea {
+            display: none; /* SEMBUNYI DI AWAL */
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .preview-box {
+            width: 100%;
+            border-radius: 2rem;
+            overflow: hidden;
+            border: 1px solid var(--border-glow);
+            background: #000;
+            position: relative;
+            box-shadow: 0 0 40px rgba(132, 66, 255, 0.3);
+        }
+
+        #outputImg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .action-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            width: 100%;
+            margin-top: 2rem;
+        }
+
+        .btn-action {
+            padding: 1rem;
+            border-radius: 50px;
+            border: 1.5px solid var(--border-glow);
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: 0.3s;
+        }
+
+        .btn-action:hover {
+            background: var(--accent-secondary);
+            border-color: var(--accent-secondary);
+        }
+
+        /* =========================================
+           6. INFO & TIPS SECTION (BOTTOM)
+           =========================================
+        */
+        .info-section {
+            max-width: 1200px;
+            margin: 5rem auto 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 2rem;
+            padding: 2.5rem;
+            border-left: 5px solid var(--accent-secondary);
+            transition: 0.3s;
+        }
+
+        .info-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-5px);
+        }
+
+        .info-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #ffccaa;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-card p {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            opacity: 0.8;
+            color: var(--text-main);
+        }
+
+        /* =========================================
+           7. UTILITY & LOADING
+           =========================================
+        */
+        #loadingOverlay {
+            display: none;
+            text-align: center;
+            padding: 3rem;
+            width: 100%;
+        }
+
+        .loader-icon {
+            font-size: 3rem;
+            color: var(--accent-secondary);
+            animation: rotateStory 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        .footer-credit {
+            text-align: center;
+            margin-top: 5rem;
+            padding-bottom: 3rem;
+            font-size: 0.8rem;
+            letter-spacing: 4px;
+            opacity: 0.4;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        /* =========================================
+           8. RESPONSIVE OPTIMIZATION
+           =========================================
+        */
+        @media (max-width: 992px) {
+            .app-grid { grid-template-columns: 1fr; }
+            .header-titles h1 { font-size: 2.5rem; }
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 1rem; }
+            .ig-story-ring { width: 80px; height: 80px; }
+            .logo-img { width: 68px; height: 68px; }
+            .header-titles h1 { font-size: 2rem; }
+            .panel-card { padding: 1.5rem; }
+            .action-row { grid-template-columns: 1fr; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="main-header reveal">
+        <div class="header-top">
+            <div class="ig-story-ring">
+                <img src="https://files.catbox.moe/wo3axo.jpg" class="logo-img" alt="Author Logo">
+            </div>
+            <div class="header-titles">
+                <h1>iPhone Quote</h1>
+                <p>By NdraOffc Elite</p>
+            </div>
+        </div>
+        
+        <div class="badge-row">
+            <div class="badge"><i class="fas fa-bolt"></i> ULTRA HD 4K</div>
+            <div class="badge"><i class="fas fa-shield-halved"></i> iOS 18 STABLE</div>
+            <div class="badge"><i class="fas fa-palette"></i> APPLE EMOJI STYLE</div>
+            <div class="badge"><i class="fas fa-check-double"></i> NO WATERMARK</div>
+        </div>
+    </header>
+
+    <main class="app-grid">
+        
+        <section class="panel-card reveal">
+            <div class="panel-head">
+                <i class="fas fa-wand-magic-sparkles"></i>
+                <h2>Quote Generator</h2>
+            </div>
+
+            <div class="form-item">
+                <label class="form-label"><i class="fas fa-clock"></i> Setting Waktu</label>
+                <input type="text" id="timeInput" class="form-control" value="">
+            </div>
+
+            <div class="form-item">
+                <label class="form-label"><i class="fas fa-battery-three-quarters"></i> Status Baterai (%)</label>
+                <input type="number" id="batteryInput" class="form-control" value="95" max="100">
+            </div>
+
+            <div class="form-item">
+                <label class="form-label"><i class="fas fa-tower-broadcast"></i> Nama Operator</label>
+                <input type="text" id="carrierInput" class="form-control" value="Telkomsel">
+            </div>
+
+            <div class="form-item">
+                <label class="form-label"><i class="fas fa-quote-left"></i> Pesan Quote</label>
+                <textarea id="messageInput" class="form-control" placeholder="Tulis teks quote di sini..."></textarea>
+            </div>
+
+            <button id="generateBtn" class="btn-main">
+                <i class="fas fa-wand-magic-sparkles"></i> Generate Quote
+            </button>
+        </section>
+
+        <section id="previewContainer">
+            
+            <div id="loadingOverlay">
+                <i class="fas fa-spinner loader-icon"></i>
+                <p style="font-weight: 700; color: var(--text-dim);">Loading...</p>
+            </div>
+
+            <div id="previewArea" class="panel-card">
+                <div class="panel-head">
+                    <i class="fas fa-eye"></i>
+                    <h2>Preview Image</h2>
+                </div>
+
+                <div class="preview-box">
+                    <img src="" id="outputImg" alt="Generated Quote">
+                </div>
+
+                <div class="action-row">
+                    <a href="#" id="downloadBtn" class="btn-action" style="background: var(--accent-secondary); border-color: var(--accent-secondary);">
+                        <i class="fas fa-download"></i> DOWNLOAD PNG
+                    </a>
+                    <button id="viewApiBtn" class="btn-action">
+                        <i class="fas fa-external-link-alt"></i> LIHAT API
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <section class="info-section">
+        
+        <div class="info-card reveal">
+            <h3><i class="fas fa-lightbulb"></i> Tips Kreatif</h3>
+            <p>Gunakan kutipan yang pendek namun bermakna. iPhone Quote terlihat sangat elegan jika isi pesannya tidak lebih dari 3 baris. Pastikan baterai di set 100% untuk kesan 'perfect'.</p>
+        </div>
+
+        <div class="info-card reveal" style="border-left-color: var(--accent-primary);">
+            <h3><i class="fas fa-camera-retro"></i> Kualitas HD</h3>
+            <p>Gambar yang dihasilkan memiliki format PNG dengan resolusi tinggi. Sangat cocok dijadikan story WhatsApp, Instagram, atau bahkan dicetak sebagai stiker fisik.</p>
+        </div>
+
+        <div class="info-card reveal">
+            <h3><i class="fas fa-code"></i> Developer Note</h3>
+            <p>Sistem ini terhubung ke engine Brat Siputzx API. Jika gambar gagal dimuat, pastikan koneksi internet kamu stabil atau coba ganti pesan tanpa karakter aneh.</p>
+        </div>
+
+    </section>
+
+    <footer class="footer-credit reveal">
+        <p>© 2026 NdraOffc • Premium Digital Atrwork system</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // --- SCROLL ANIMATION (AOS REPLACEMENT) ---
+            const revealElements = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    } else {
+                        // Hilangkan baris di bawah jika animasi cuma sekali
+                        entry.target.classList.remove('active');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            revealElements.forEach(el => observer.observe(el));
+
+            // --- UI ELEMENTS ---
+            const btnGen       = document.getElementById('generateBtn');
+            const loadOverlay  = document.getElementById('loadingOverlay');
+            const previewArea  = document.getElementById('previewArea');
+            const outputImg    = document.getElementById('outputImg');
+            
+            const btnDownload  = document.getElementById('downloadBtn');
+            const btnViewApi   = document.getElementById('viewApiBtn');
+
+            const timeIn       = document.getElementById('timeInput');
+            const batteryIn    = document.getElementById('batteryInput');
+            const carrierIn    = document.getElementById('carrierInput');
+            const messageIn    = document.getElementById('messageInput');
+
+            let lastUrl = "";
+
+            // --- GENERATION LOGIC ---
+            async function buildImage() {
+                const time    = timeIn.value.trim();
+                const battery = batteryIn.value.trim();
+                const carrier = carrierIn.value.trim();
+                const message = messageIn.value.trim();
+
+                if(!message) return alert("Quote-nya diisi dulu bos!");
+
+                // Reset Tampilan
+                previewArea.style.display = "none";
+                loadOverlay.style.display = "block";
+
+                // URL Construction
+                const apiBase = "https://brat.siputzx.my.id/iphone-quoted";
+                const params = new URLSearchParams({
+                    time: time,
+                    batteryPercentage: battery,
+                    carrierName: carrier,
+                    messageText: message,
+                    emojiStyle: "apple"
+                });
+
+                lastUrl = `${apiBase}?${params.toString()}`;
+
+                // Image Pre-loading (Biar Rapi pas muncul)
+                const img = new Image();
+                img.src = lastUrl;
+
+                img.onload = () => {
+                    loadOverlay.style.display = "none";
+                    outputImg.src = lastUrl;
+                    previewArea.style.display = "flex";
+                    
+                    // Auto scroll ke hasil
+                    previewArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                };
+
+                img.onerror = () => {
+                    loadOverlay.style.display = "none";
+                    alert("Waduh, server API lagi capek. Coba lagi nanti ya.");
+                };
+            }
+
+            // --- EVENT LISTENERS ---
+            btnGen.addEventListener('click', buildImage);
+
+            btnViewApi.addEventListener('click', () => {
+                if(lastUrl) window.open(lastUrl, '_blank');
+            });
+
+            // Force Download Logic
+            btnDownload.addEventListener('click', async (e) => {
+                e.preventDefault();
+                if(!lastUrl) return;
+
+                try {
+                    const response = await fetch(lastUrl);
+                    const blob = await response.blob();
+                    const bUrl = window.URL.createObjectURL(blob);
+                    
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = bUrl;
+                    a.download = `IphoneQuote_${Date.now()}.png`;
+                    document.body.appendChild(a);
+                    a.click();
+                    
+                    window.URL.revokeObjectURL(bUrl);
+                    document.body.removeChild(a);
+                } catch (err) {
+                    window.open(lastUrl, '_blank');
+                }
+            });
+
+            // Set Current Time
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            timeIn.value = `${h}:${m}`;
+
+        });
+    </script>
+</body>
+</html>
